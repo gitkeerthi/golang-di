@@ -2,21 +2,25 @@ package user
 
 import "github.com/kpkeerthi/golang-di/db"
 
+// The dependency, modelled as an interface
 type UserDao interface {
 	Insert(user User) error
 	Get(id int) (User, error)
 }
 
+// Consumer of a dependency - a service
 type UserService struct {
 	userDao UserDao
 }
 
+// Domain model
 type User struct {
 	Id   int
 	Name string
 }
 
-// Accept dependency as an interface and return concrete struct
+// A factory function to create the service
+// The service accepts its dependency as an interface
 func NewUserService(dao UserDao) *UserService {
 	return &UserService{
 		userDao: dao,
@@ -31,47 +35,47 @@ func (s *UserService) GetUser(id int) (User, error) {
 	return s.userDao.Get(id)
 }
 
-// Factory function to create the real dao
-func NewUserDao(ds *db.DataSource) *PersistingUserDao {
-	return &PersistingUserDao{
-		dataSource: ds,
-	}
-}
-
 // This is our real Dao
-type PersistingUserDao struct {
+type PostgresUserDao struct {
 	dataSource *db.DataSource
 }
 
-func (dao *PersistingUserDao) Insert(user User) error {
-	db := dao.dataSource.Db
+func (p *PostgresUserDao) Insert(user User) error {
+	db := p.dataSource.Db
 	db.Exec("") // implement real interaction with the db
 	return nil
 }
 
-func (dao *PersistingUserDao) Get(id int) (User, error) {
-	db := dao.dataSource.Db
+func (p *PostgresUserDao) Get(id int) (User, error) {
+	db := p.dataSource.Db
 	db.Exec("") // implement real interaction with the db
 	return User{}, nil
 }
 
-// This is our mock dao. Can be used for unit testing the service
+// A factory function to create the real dao
+func NewPostgresUserDao(ds *db.DataSource) *PostgresUserDao {
+	return &PostgresUserDao{
+		dataSource: ds,
+	}
+}
+
+// This is our mock dao. Can be used for unit testing the service.
 type InMemoryUserDao struct {
 	dataSource *db.DataSource
 }
 
-func (dao *InMemoryUserDao) Insert(user User) error {
+func (m *InMemoryUserDao) Insert(user User) error {
 	// emulate db operations in memory
 	return nil
 }
 
-func (dao *InMemoryUserDao) Get(id int) (User, error) {
+func (m *InMemoryUserDao) Get(id int) (User, error) {
 	// emulate db operations in memory
 	return User{Id: 10, Name: "John Doe"}, nil
 }
 
-// Factory function to create the mock dao
-func NewMockUserDao() *InMemoryUserDao {
+// A factory function to create the mock in-memory dao
+func NewInMemoryUserDao() *InMemoryUserDao {
 	return &InMemoryUserDao{
 		dataSource: nil,
 	}

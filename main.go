@@ -13,7 +13,7 @@ func main() {
 }
 
 func runWithMockDb() {
-	userDao := user.NewMockUserDao()
+	userDao := user.NewInMemoryUserDao()
 	userService := user.NewUserService(userDao)
 
 	user, err := userService.GetUser(100)
@@ -33,7 +33,7 @@ func runWithRealDb() {
 	}
 
 	dataSource := db.NewDataSource(config)
-	userDao := user.NewUserDao(dataSource)
+	userDao := user.NewPostgresUserDao(dataSource)
 	userService := user.NewUserService(userDao)
 
 	user, err := userService.GetUser(100)
