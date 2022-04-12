@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
-	"github.com/kpkeerthi/golang-ci/db"
-	"github.com/kpkeerthi/golang-ci/user"
+	"github.com/kpkeerthi/golang-di/db"
+	"github.com/kpkeerthi/golang-di/user"
 )
 
 func main() {
 	runWithMockDb()
-	runWithRealDb()
+	//runWithRealDb()
 }
 
 func runWithMockDb() {

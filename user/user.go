@@ -1,6 +1,6 @@
 package user
 
-import "github.com/kpkeerthi/golang-ci/db"
+import "github.com/kpkeerthi/golang-di/db"
 
 type UserDao interface {
 	Insert(user User) error
@@ -12,9 +12,11 @@ type UserService struct {
 }
 
 type User struct {
+	Id   int
+	Name string
 }
 
-// Accepting interface here!
+// Accept dependency as an interface and return concrete struct
 func NewUserService(dao UserDao) *UserService {
 	return &UserService{
 		userDao: dao,
@@ -41,11 +43,13 @@ type PersistingUserDao struct {
 
 func (dao *PersistingUserDao) Insert(user User) error {
 	db := dao.dataSource.Db
-	db.Exec("")
+	db.Exec("") // implement real interaction with the db
 	return nil
 }
 
 func (dao *PersistingUserDao) Get(id int) (User, error) {
+	db := dao.dataSource.Db
+	db.Exec("") // implement real interaction with the db
 	return User{}, nil
 }
 
@@ -66,5 +70,5 @@ func (dao *InMemoryUserDao) Insert(user User) error {
 
 func (dao *InMemoryUserDao) Get(id int) (User, error) {
 	// emulate db operations in memory
-	return User{}, nil
+	return User{Id: 10, Name: "John Doe"}, nil
 }
