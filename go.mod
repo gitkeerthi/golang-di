@@ -1,3 +1,3 @@
-module github.com/kpkeerthi/golang-di
+module github.com/gitkeerthi/golang-di
 
 go 1.18

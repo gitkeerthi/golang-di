@@ -1,6 +1,6 @@
 package user
 
-import "github.com/kpkeerthi/golang-di/db"
+import "github.com/gitkeerthi/golang-di/db"
 
 // The dependency, modelled as an interface
 type UserDao interface {

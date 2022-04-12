@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/kpkeerthi/golang-di/db"
-	"github.com/kpkeerthi/golang-di/user"
+	"github.com/gitkeerthi/golang-di/db"
+	"github.com/gitkeerthi/golang-di/user"
 )
 
 func main() {
