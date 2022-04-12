@@ -9,7 +9,9 @@ import (
 
 func main() {
 	runWithMockDb()
-	//runWithRealDb()
+	if false {
+		runWithRealDb()
+	}
 }
 
 func runWithMockDb() {
