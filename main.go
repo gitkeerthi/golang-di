@@ -27,14 +27,9 @@ func runWithMockDb() {
 }
 
 func runWithRealDb() {
-	config := map[string]interface{}{
-		"host":     "localhost",
-		"port":     5000,
-		"user":     "admin",
-		"password": "secret",
-	}
+	dataSource := db.NewDataSource("user=postgres dbname=test password=secret host=localhost sslmode=disable")
+	defer dataSource.Db.Close()
 
-	dataSource := db.NewDataSource(config)
 	userDao := user.NewPostgresUserDao(dataSource)
 	userService := user.NewUserService(userDao)
 
