@@ -61,7 +61,6 @@ func NewPostgresUserDao(ds *db.DataSource) *PostgresUserDao {
 
 // This is our mock dao. Can be used for unit testing the service.
 type InMemoryUserDao struct {
-	dataSource *db.DataSource
 }
 
 func (m *InMemoryUserDao) Insert(user User) error {
@@ -76,7 +75,5 @@ func (m *InMemoryUserDao) Get(id int) (User, error) {
 
 // A factory function to create the mock in-memory dao
 func NewInMemoryUserDao() *InMemoryUserDao {
-	return &InMemoryUserDao{
-		dataSource: nil,
-	}
+	return &InMemoryUserDao{}
 }
