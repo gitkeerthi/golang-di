@@ -1,23 +1,22 @@
 package user
 
-
 // Consumer of a dependency - a service
 type UserService struct {
-	userDao UserDao
+	userRepository UserRepository
 }
 
 func (s *UserService) CreateUser(user User) error {
-	return s.userDao.Insert(user)
+	return s.userRepository.Insert(user)
 }
 
 func (s *UserService) GetUser(id int) (User, error) {
-	return s.userDao.Get(id)
+	return s.userRepository.Get(id)
 }
 
 // A factory function to create the service
 // The service accepts its dependency as an interface
-func NewUserService(dao UserDao) *UserService {
+func NewUserService(repository UserRepository) *UserService {
 	return &UserService{
-		userDao: dao,
+		userRepository: repository,
 	}
 }

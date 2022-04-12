@@ -15,8 +15,8 @@ func main() {
 }
 
 func runWithMockDb() {
-	userDao := user.NewInMemoryUserDao()
-	userService := user.NewUserService(userDao)
+	userRepository := user.NewInMemoryUserRepository()
+	userService := user.NewUserService(userRepository)
 
 	user, err := userService.GetUser(100)
 	if err != nil {
@@ -30,8 +30,8 @@ func runWithRealDb() {
 	dataSource := db.NewDataSource("user=postgres dbname=test password=secret host=localhost sslmode=disable")
 	defer dataSource.Db.Close()
 
-	userDao := user.NewPostgresUserDao(dataSource)
-	userService := user.NewUserService(userDao)
+	userRepository := user.NewPostgresUserRepository(dataSource)
+	userService := user.NewUserService(userRepository)
 
 	user, err := userService.GetUser(100)
 	if err != nil {
