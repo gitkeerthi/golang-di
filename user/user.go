@@ -2,6 +2,12 @@ package user
 
 import "github.com/gitkeerthi/golang-di/db"
 
+// Domain model
+type User struct {
+	Id   int
+	Name string
+}
+
 // The dependency, modelled as an interface
 type UserDao interface {
 	Insert(user User) error
@@ -13,10 +19,12 @@ type UserService struct {
 	userDao UserDao
 }
 
-// Domain model
-type User struct {
-	Id   int
-	Name string
+func (s *UserService) CreateUser(user User) error {
+	return s.userDao.Insert(user)
+}
+
+func (s *UserService) GetUser(id int) (User, error) {
+	return s.userDao.Get(id)
 }
 
 // A factory function to create the service
@@ -27,15 +35,7 @@ func NewUserService(dao UserDao) *UserService {
 	}
 }
 
-func (s *UserService) CreateUser(user User) error {
-	return s.userDao.Insert(user)
-}
-
-func (s *UserService) GetUser(id int) (User, error) {
-	return s.userDao.Get(id)
-}
-
-// This is our real Dao
+// This is our real (persistence-aware) Dao
 type PostgresUserDao struct {
 	dataSource *db.DataSource
 }
@@ -59,7 +59,7 @@ func NewPostgresUserDao(ds *db.DataSource) *PostgresUserDao {
 	}
 }
 
-// This is our mock dao. Can be used for unit testing the service.
+// This is our mock (in-memory) dao. Can be used for unit testing the service.
 type InMemoryUserDao struct {
 }
 
